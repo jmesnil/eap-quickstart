@@ -55,14 +55,11 @@ public class HelloWorldMDBServletClient extends HttpServlet {
 
     private static final int MSG_COUNT = 5;
 
-    @Resource(mappedName = "java:/ConnectionFactory")
+    @Resource(mappedName = "java:/activemq/ConnectionFactory")
     private ConnectionFactory connectionFactory;
 
-    @Resource(mappedName = "java:/queue/HELLOWORLDMDBQueue")
+    @Resource(mappedName = "java:/activemq/queue_in")
     private Queue queue;
-
-    @Resource(mappedName = "java:/topic/HELLOWORLDMDBTopic")
-    private Topic topic;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -71,12 +68,7 @@ public class HelloWorldMDBServletClient extends HttpServlet {
         Connection connection = null;
         out.write("<h1>Quickstart: This example demonstrates the use of <strong>JMS 1.1</strong> and <strong>EJB 3.1 Message-Driven Bean</strong> in JBoss Enterprise Application 6.</h1>");
         try {
-            Destination destination;
-            if (req.getParameterMap().keySet().contains("topic")) {
-                destination = topic;
-            } else {
-                destination = queue;
-            }
+            Destination destination = queue;
             out.write("<p>Sending messages to <em>" + destination + "</em></p>");
             connection = connectionFactory.createConnection();
             Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
