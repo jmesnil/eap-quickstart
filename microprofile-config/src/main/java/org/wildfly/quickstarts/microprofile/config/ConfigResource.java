@@ -20,7 +20,7 @@ public class ConfigResource {
     @GET
     @Path("/value")
     public String getValue() {
-        return configValue;
+        return configValue.toUpperCase();
     }
 
     @Inject
